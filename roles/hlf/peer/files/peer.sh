@@ -1,10 +1,10 @@
 #Start the peer
 peer node start &
 
-while ! nc -z $CORE_PEER_ID 7051; do   
-  sleep 0.1 # wait for 1/10 of the second before check again
-done
-
+# while ! nc -z $CORE_PEER_ID 7051; do   
+#   sleep 0.1 # wait for 1/10 of the second before check again
+# done
+sleep 30s
 # Join the peers to the application channel
 CORE_PEER_TLS_ROOTCERT_FILE=/root/${CORE_PEER_ID}/tls-msp/tlscacerts/tls-${TLSCA_HOST}-7054.pem
 CORE_PEER_MSPCONFIGPATH=/root/admin/msp

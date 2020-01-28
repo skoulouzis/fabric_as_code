@@ -46,12 +46,9 @@
       - source: "/root/hlft-store/orderer_cli/"
         target: "/root/peer_cli/artifacts"
         type: bind
-      - source: "/root/hlft-store/{{peer1.name}}/"
-        target: "{{peer1.path}}"
+      - source: "/root/hlft-store/{{orderer.name}}/"
+        target: "{{orderer.path}}"
         type: bind 
-      - source: "/root/hlft-store/{{peer2.name}}/"
-        target: "{{peer2.path}}"
-        type: bind   
       - source: "/root/hlft-store/{{orgca.name}}/admin/"
         target: "/root/admin"
         type: bind
@@ -62,8 +59,6 @@
       - "CORE_PEER_TLS_ENABLED=true"  
       - "CORE_PEER_LOCALMSPID={{org.name}}MSP"    
       - "ORDERER_HOST={{orderer.name}}"
-      - "PEER1_HOST={{peer1.name}}"
-      - "PEER2_HOST={{peer2.name}}"
       - "TLSCA_HOST={{tlsca.name}}"
     placement:      
       constraints:

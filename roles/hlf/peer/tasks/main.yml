@@ -82,6 +82,9 @@
     mode: replicated
     replicas: "{{item.replicas}}"
     mounts:
+      - source: "/root/hlft-store/orderer_cli"
+        target: "/root/peer_cli/artifacts"
+        type: bind
       - source: "/root/hlft-store/{{item.name}}"
         target: "{{item.path}}"
         type: bind 
