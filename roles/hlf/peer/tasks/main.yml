@@ -60,10 +60,13 @@
 - name: Copy scripts
   become: yes
   copy:
-    src: "cli.sh"
+    src: "peer.sh"
     dest: "/root/hlft-store/{{item.name}}/peer.sh"
     mode: "0500"
     force: yes 
+  loop: 
+    - "{{ peer1 }}"    
+    - "{{ peer2 }}"
 
   # Create & Start services for Peers 
 - name: Fabric Service - {{ item }}
@@ -75,7 +78,7 @@
       - "{{swarm_network}}"
     image: "{{item.image}}:{{item.tag}}"
     command: >
-      bash -c "/root/hlft-store/{{item.name}}/peer.sh;"
+      bash -c "{{item.path}}/peer.sh;"
     mode: replicated
     replicas: "{{item.replicas}}"
     mounts:
