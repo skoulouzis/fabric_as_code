@@ -7,5 +7,6 @@
   gather_facts: no
   roles:
     - hlf/couchdb
-    - hlf/peer
     - hlf/cli/peer
+    - hlf/peer
+    

@@ -9,7 +9,10 @@ fabric-ca-client register -d --id.name $PEER1_HOST --id.secret $PEER1_SECRET --i
 
 echo "Regsiter peers at $FABRIC_CA_NAME"
 fabric-ca-client register -d --id.name $PEER2_HOST --id.secret $PEER2_SECRET --id.type peer -u https://$FABRIC_CA_NAME:$FABRIC_CA_PORT
-fabric-ca-client register -d --id.name $ORDERER_HOST --id.secret $ORDERER_SECRET --id.type orderer -u https://$FABRIC_CA_NAME:$FABRIC_CA_PORT
+fabric-ca-client register -d --id.name $ORDERER_HOST --id.secret $ORDERER_SECRET --id.type peer -u https://$FABRIC_CA_NAME:$FABRIC_CA_PORT
+
+echo "Regsiter admin at $FABRIC_CA_NAME"
+fabric-ca-client register -d --id.name admin-$FABRIC_CA_NAME --id.secret $FABRIC_CA_SECRET --id.type admin --id.attrs "hf.Registrar.Roles=client,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,abac.init=true:ecert" -u https://$FABRIC_CA_NAME:$FABRIC_CA_PORT
 
 #Create an admin user for organization CA
 type=$1
@@ -36,10 +39,7 @@ if [ $type == $tlsca ]; then
   filename=$(ls $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_MSPDIR/keystore | sort -n | head -1)
   mv $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_MSPDIR/keystore/$filename $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_MSPDIR/keystore/key.pem
   
-elif [ $type == $orgca ]; then
-  echo "Regsiter admin at $FABRIC_CA_NAME"
-  fabric-ca-client register -d --id.name admin-$FABRIC_CA_NAME --id.secret $FABRIC_CA_SECRET --id.type admin --id.attrs "hf.Registrar.Roles=client,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,abac.init=true:ecert" -u https://$FABRIC_CA_NAME:$FABRIC_CA_PORT
-    
+elif [ $type == $orgca ]; then   
   export FABRIC_CA_CLIENT_MSPDIR=msp
   # Enroll Peers 
   #Peer1

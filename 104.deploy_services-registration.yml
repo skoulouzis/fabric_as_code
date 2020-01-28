@@ -1,0 +1,9 @@
+---
+
+# ansible-playbook -v 104.deploy_services-registration.yml --flush-cache -u root 
+
+- name: Spawn a Hyperledger Fabric Topology
+  hosts: swarm_manager_prime
+  gather_facts: no
+  roles:
+    - hlf/cli/cli  

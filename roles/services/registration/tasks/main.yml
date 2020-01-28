@@ -1,0 +1,8 @@
+
+---
+    # Setup the registration service for enrolling an admint and registering users on the CAs
+    
+    - name: "Get docker info"
+      shell: docker info
+      register: docker_info
+      changed_when: false

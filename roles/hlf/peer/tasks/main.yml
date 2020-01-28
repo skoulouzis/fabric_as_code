@@ -56,6 +56,15 @@
     - "{{ peer1 }}"
     - "{{ peer2 }}"
 
+# Copy the relevent scripts
+- name: Copy scripts
+  become: yes
+  copy:
+    src: "cli.sh"
+    dest: "/root/hlft-store/{{item.name}}/peer.sh"
+    mode: "0500"
+    force: yes 
+
   # Create & Start services for Peers 
 - name: Fabric Service - {{ item }}
   become: yes
@@ -65,6 +74,8 @@
     networks:
       - "{{swarm_network}}"
     image: "{{item.image}}:{{item.tag}}"
+    command: >
+      bash -c "/root/hlft-store/{{item.name}}/peer.sh;"
     mode: replicated
     replicas: "{{item.replicas}}"
     mounts:
@@ -100,6 +111,7 @@
       - "CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS={{couchdb.name}}_{{item.name}}:5984"
       - "CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME={{couchdb.name}}"
       - "CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD={{couchdb.password}}"
+      - "TLSCA_HOST={{tlsca.name}}"
     working_dir: "{{item.path}}"
     placement:      
       constraints:
